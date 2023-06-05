@@ -1,0 +1,16 @@
+Here's an easy way to remember the order of SQL's Big 6:
+
+1) START --------> SELECT
+
+2) FRIDAYS ------> FROM
+
+3) WITH ---------> WHERE
+
+4) GRANDMA'S ----> GROUP BY
+
+5) HOMEMADE -----> HAVING
+
+6) OATMEAL ------> ORDER BY
+
+
+ENJOY!!

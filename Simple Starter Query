@@ -1,0 +1,6 @@
+SELECT *
+FROM Random_Database
+WHERE X = 1
+AND Y = 2
+GROUP BY X
+ORDER BY Y DESC

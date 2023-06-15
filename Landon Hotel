@@ -1,0 +1,75 @@
+-- Pull in all of the taales in the LandonHotel dataset
+SELECT *
+FROM dbo.Employees;
+
+SELECT *
+FROM dbo.Guests;
+
+SELECT *
+FROM dbo.RoomRervations;
+
+SELECT *
+FROM dbo.Rooms;
+
+-- EMPLOYEES TABLE
+-- In the employees table, count the amount of employees in each country
+SELECT *
+FROM dbo.Employees;
+
+SELECT Country, COUNT(country) AS Employees_Count
+FROM dbo.Employees
+GROUP BY Country;
+
+-- GUESTS TABLE
+-- Remove any rows that have NULL values in the location columns
+SELECT *
+FROM dbo.Guests;
+
+SELECT *
+FROM dbo.Guests
+WHERE Address IS NOT NULL;
+
+-- Remove the timestamp column due to the amount of Null values
+SELECT GuestID, FirstName, LastName, Address, City, State, PostalCode, Country
+FROM dbo.guests
+WHERE Address IS NOT NULL
+
+-- ROOMS TABLE
+SELECT *
+FROM dbo.Rooms;
+--Count the amount of BedTypes
+SELECT BedType, COUNT(BedType) AS BedCount
+FROM dbo.rooms
+GROUP BY BedType;
+
+-- Let's Look at all the tables and remove any of the Null Rows
+SELECT *
+FROM dbo.Employees;
+SELECT *
+FROM dbo.Guests
+WHERE Address IS NOT NULL;
+SELECT *
+FROM dbo.RoomRervations;
+SELECT *
+FROM dbo.Rooms;
+
+-- The most important tables to look at are Guest, RoomReservations, and Rooms
+-- Let's join the tables to see which guests reserved rooms at the Landon Hotel
+SELECT dbo.Guests.*, dbo.RoomRervations.*
+FROM dbo.Guests
+INNER JOIN dbo.RoomRervations
+ON dbo.Guests.GuestID = dbo.RoomRervations.GustID;
+
+-- Looks like Katerine Reid and Linda Moreno were guests and the Landon Hotel
+
+-- NOw let's see what rooms the reserved, using a Double Inner Join
+SELECT dbo.Guests.FirstName, dbo.Guests.LastName, dbo.Guests.GuestID, dbo.Rooms.RoomNumber, dbo.Rooms.BedType, dbo.Rooms.Rate
+FROM dbo.Guests
+INNER JOIN dbo.RoomRervations
+ON dbo.Guests.GuestID = dbo.RoomRervations.GustID
+INNER JOIN dbo.Rooms
+ON dbo.RoomRervations.RoomNumber = dbo.rooms.RoomNumber
+
+-- In this data set, only Katherine Rein ordered a room in the Landon Hotel
+
+

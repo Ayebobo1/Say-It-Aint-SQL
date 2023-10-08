@@ -1,0 +1,74 @@
+SELECT TOP 20 *
+FROM dbo.onlinefraud
+WHERE isFlaggedFraud <> 0;
+
+-- Need to change the Amount column from a variable to a Float
+ALTER TABLE dbo.onlinefraud
+ADD NewAmount FLOAT;
+
+SELECT CAST(amount AS float) AS NewAmount
+FROM dbo.onlinefraud;
+
+-- Calculting the amount of transactions per type
+SELECT DISTINCT type, SUM(NewAmount) AS TotalTransactions
+FROM dbo.onlinefraud
+GROUP BY type;
+
+-- Calculating the count of transactions and the amount of each per type
+SELECT DISTINCT type, COUNT(NewAmount) AS TotalTransactions, AVG(NewAmount) AS AmountAVGTransactions, SUM(NewAmount) AS AmountTotalTransactions
+FROM dbo.onlinefraud
+GROUP BY type;
+
+-- Calculting the amount of fradulent transactions per type for Fraud Specific
+SELECT DISTINCT type, SUM(NewAmount) AS TotalTransactions
+FROM dbo.onlinefraud
+WHERE isFraud = '1'
+GROUP BY type;
+
+-- Calculating the count of transactions and the amount of each per type for Fraud Specific
+SELECT DISTINCT type, COUNT(NewAmount) AS TotalTransactions, AVG(NewAmount) AS AmountAVGTransactions, SUM(NewAmount) AS AmountTotalTransactions
+FROM dbo.onlinefraud
+WHERE isFraud = '1'
+GROUP BY type;
+
+-- Count of the Origin transactions names
+SELECT COUNT(DISTINCT nameOrig) AS OriginNameCount	
+FROM dbo.onlinefraud;
+
+-- Count of the Destination transactions names
+SELECT COUNT(DISTINCT nameDest) AS DestinationNameCount
+FROM dbo.onlinefraud;
+
+-- Count of the Origin transactions names for Fraud Specific
+SELECT COUNT(DISTINCT nameOrig) AS OriginNameCount	
+FROM dbo.onlinefraud
+WHERE isFraud = '1';
+
+-- Count of the Destination transactions names for Fraud Specific
+SELECT COUNT(DISTINCT nameDest) AS DestinationNameCount
+FROM dbo.onlinefraud
+WHERE isFraud = '1';
+
+SELECT DISTINCT TYPE, COUNT(NewAmount), (SELECT DISTINCT COUNT(NewAmount) FROM dbo.onlinefraud WHERE isFraud IN ('1') GROUP BY type)
+FROM dbo.onlinefraud
+GROUP BY type;
+
+-- Min, AVG, Max Transactions $$ Amounts
+SELECT type, MIN(NewAmount) AS MinNewAmount, AVG(NewAmount) AS AvgNewAmount, MAX(NewAmount) AS MaxNewAmount
+FROM dbo.onlinefraud
+GROUP BY type;
+
+-- Min, AVG, Max Fraud Transactions $$ Amounts
+SELECT type, MIN(NewAmount) AS MinNewAmount, AVG(NewAmount) AS AvgNewAmount, MAX(NewAmount) AS MaxNewAmount
+FROM dbo.onlinefraud
+WHERE isFraud = '1'
+GROUP BY type;
+
+-- Total Count of All transactions
+SELECT DISTINCT COUNT(NewAmount), SUM(NewAmount)
+FROM dbo.onlinefraud;
+
+-- Total Count of All Fraud transactions
+SELECT DISTINCT COUNT(NewAmount), SUM(NewAmount)
+FROM dbo.onlinefraud
+WHERE isFraud = '1';
